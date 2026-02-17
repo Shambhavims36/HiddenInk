@@ -1,0 +1,44 @@
+package in.shambhavi.exception;
+
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+
+
+
+
+@RestControllerAdvice
+public class GlobalException {
+	
+	@ExceptionHandler(UserException.class)
+	public ResponseEntity<Map<String, Object>> handleCandiateException(UserException userException)
+	{
+		Map<String,Object> errorResponse = new HashMap<>();
+		errorResponse.put("status", "failure");
+		errorResponse.put("type","User Exception");
+		errorResponse.put("error", userException.getMessage());
+		errorResponse.put("localTime", LocalDateTime.now());
+		errorResponse.put("status", userException.getHttpStatus().toString());
+		return new ResponseEntity<Map<String,Object>>(errorResponse, userException.getHttpStatus());
+		
+	}
+	
+	@ExceptionHandler(DiaryException.class)
+	public ResponseEntity<Map<String, Object>> handleDiaryException(DiaryException diaryException)
+	{
+		Map<String,Object> errorResponse = new HashMap<>();
+		errorResponse.put("status", "failure");
+		errorResponse.put("type","Diary Exception");
+		errorResponse.put("error", diaryException.getMessage());
+		errorResponse.put("localTime", LocalDateTime.now());
+		errorResponse.put("status", diaryException.getHttpStatus().toString());
+		return new ResponseEntity<Map<String,Object>>(errorResponse, diaryException.getHttpStatus());
+		
+	}
+
+}
